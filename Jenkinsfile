@@ -3,12 +3,12 @@ pipeline {
     stages {
         stage ('Build Backend') {
             steps {
-                bat 'mvn clean package -DskipTests=true'
+                sh 'mvn clean package -DskipTests=true'
             }
         }
         stage ('Unit Tests') {
             steps {
-                bat 'mvn test'
+                sh 'mvn test'
             }
         }
         stage ('Deploy Backend') {
@@ -20,7 +20,7 @@ pipeline {
             steps {
                 dir('api-test') {
                     git credentialsId: 'github-key', url: 'https://github.com/David-Nascimento/tasks-api-test'
-                    bat 'mvn test'
+                    sh 'mvn test'
                 }
             }
         }
@@ -28,7 +28,7 @@ pipeline {
             steps {
                 dir('frontend') {
                     git credentialsId: 'github-key', url: 'https://github.com/David-Nascimento/tasks-frontend.git'
-                    bat 'mvn clean package'
+                    sh 'mvn clean package'
                     deploy adapters: [tomcat8(credentialsId: 'TomCatID', path: '', url: 'http://10.0.2.207:8001/')], contextPath: 'tasks', war: 'target/tasks.war'
                 }
             }
@@ -37,22 +37,22 @@ pipeline {
             steps {
                 dir('functional-test') {
                     git credentialsId: 'github-key', url: 'https://github.com/David-Nascimento/tasks-functional-tests'
-                    bat 'mvn test'
+                    sh 'mvn test'
                 }
             }
         }
         stage('Deploy Prod') {
             steps {
                 input message: 'Deseja Publicar em Homologação?', ok: 'Sim'
-                bat 'docker-compose build'
-                bat 'docker-compose up -d'
+                sh 'docker-compose build'
+                sh 'docker-compose up -d'
             }
         }
         stage ('Health Check') {
             steps {
                 sleep(5)
                 dir('functional-test') {
-                    bat 'mvn verify -Dskip.surefire.tests'
+                    sh 'mvn verify -Dskip.surefire.tests'
                 }
             }
         }
