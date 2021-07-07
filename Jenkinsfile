@@ -16,14 +16,6 @@ pipeline {
                 deploy adapters: [tomcat8(credentialsId: 'TomCatID', path: '', url: 'http://10.0.2.207:8001/')], contextPath: 'tasks-backend', war: 'target/tasks-backend.war'
             }
         }
-        stage ('API Test') {
-            steps {
-                dir('api-test') {
-                    git credentialsId: 'github-key', url: 'https://github.com/David-Nascimento/tasks-api-test'
-                    bat 'mvn test'
-                }
-            }
-        }
         stage ('Deploy Frontend') {
             steps {
                 dir('frontend') {
@@ -61,12 +53,6 @@ pipeline {
         always {
             junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml, api-test/target/surefire-reports/*.xml, functional-test/target/surefire-reports/*.xml, functional-test/target/failsafe-reports/*.xml'
             archiveArtifacts artifacts: 'target/tasks-backend.war, frontend/target/tasks.war', onlyIfSuccessful: true
-        }
-        unsuccessful {
-            emailext attachLog: true, body: 'See the attached log below', subject: 'Build $BUILD_NUMBER has failed', to: 't_david@hapvida.com.br'
-        }
-        fixed {
-            emailext attachLog: true, body: 'See the attached log below', subject: 'Build is fine!!!', to: 't_david@hapvida.com.br'
         }
     }
 }
