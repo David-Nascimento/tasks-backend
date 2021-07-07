@@ -29,7 +29,7 @@ pipeline {
                 dir('frontend') {
                     git credentialsId: 'github-key', url: 'https://github.com/David-Nascimento/tasks-frontend.git'
                     bat 'mvn clean package'
-                    deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://10.0.2.207:8001/')], contextPath: 'tasks', war: 'target/tasks.war'
+                    deploy adapters: [tomcat8(credentialsId: 'TomCatID', path: '', url: 'http://10.0.2.207:8001/')], contextPath: 'tasks', war: 'target/tasks.war'
                 }
             }
         }
@@ -63,10 +63,10 @@ pipeline {
             archiveArtifacts artifacts: 'target/tasks-backend.war, frontend/target/tasks.war', onlyIfSuccessful: true
         }
         unsuccessful {
-            emailext attachLog: true, body: 'See the attached log below', subject: 'Build $BUILD_NUMBER has failed', to: 'homol+jenkins@gmail.com'
+            emailext attachLog: true, body: 'See the attached log below', subject: 'Build $BUILD_NUMBER has failed', to: 't_david@hapvida.com.br'
         }
         fixed {
-            emailext attachLog: true, body: 'See the attached log below', subject: 'Build is fine!!!', to: 'homol+jenkins@gmail.com'
+            emailext attachLog: true, body: 'See the attached log below', subject: 'Build is fine!!!', to: 't_david@hapvida.com.br'
         }
     }
 }
