@@ -24,7 +24,7 @@ public class TaskControllerTest {
 	
 	@Before
 	public void setup() {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.initMocks(thi);
 	}
 
 	@Test
