@@ -27,7 +27,7 @@ pipeline {
         }
         stage('Deploy Prod') {
             steps {
-                input message: 'Deseja Publicar em Homologação?', ok: 'Sim'
+                input message: 'Deseja Publicar em Produção?', ok: 'Sim'
                 bat 'docker-compose build'
                 bat 'docker-compose up -d'
             }
