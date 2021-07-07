@@ -25,14 +25,6 @@ pipeline {
                 }
             }
         }
-        stage ('Functional Test') {
-            steps {
-                dir('functional-test') {
-                    git credentialsId: 'github-key', url: 'https://github.com/David-Nascimento/tasks-functional-tests'
-                    bat 'mvn test'
-                }
-            }
-        }
         stage('Deploy Prod') {
             steps {
                 input message: 'Deseja Publicar em Homologação?', ok: 'Sim'
