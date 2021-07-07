@@ -32,14 +32,6 @@ pipeline {
                 bat 'docker-compose up -d'
             }
         }
-        stage ('Health Check') {
-            steps {
-                sleep(5)
-                dir('functional-test') {
-                    bat 'mvn verify -Dskip.surefire.tests'
-                }
-            }
-        }
     }
     post {
         always {
